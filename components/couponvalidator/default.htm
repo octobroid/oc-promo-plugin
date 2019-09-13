@@ -1,0 +1,12 @@
+<div class="form-group">
+    {% if __SELF__.property('show_button') %}
+    <div class="input-group">
+        <input type="text" name="{{ __SELF__.property('input_name') }}" placeholder="{{ __SELF__.property('input_code_placeholder') }}" class="form-control">
+        <div class="input-group-append">
+            <button class="btn btn-outline-primary" type="submit" data-request-form="input[name={{ __SELF__.property('input_name') }}]" data-request="{{ __SELF__ ~ '::onCheck' }}" data-attach-loading>Check</button>
+        </div>
+    </div>
+    {% else %}
+    <input type="text" name="{{ __SELF__.property('input_name') }}" placeholder="{{ __SELF__.property('input_code_placeholder') }}" class="form-control" data-request="{{ __SELF__ ~ '::onCheck' }}" data-track-input data-request-flash>
+    {% endif %}
+</div>

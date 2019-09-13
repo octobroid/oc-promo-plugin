@@ -1,0 +1,28 @@
+columns:
+    sort_order:
+        label: Order
+        type: number
+        sortable: false
+    operator:
+        label: Operand
+        type: text
+        sortable: false
+    type:
+        label: Type
+        type: text
+        searchable: true
+        sortable: false
+    description:
+        label: Description
+        type: text
+        searchable: true
+        sortable: false
+    options:
+        label: Options
+        type: partial
+        path: $/octobro/promo/models/rule/_options_column.htm
+        sortable: false
+    output_type:
+        label: Output Type
+        type: text
+        sortable: false

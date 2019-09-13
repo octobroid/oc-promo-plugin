@@ -1,0 +1,18 @@
+promo_rules:
+    label: Rule
+    showSearch: true
+    defaultSort:
+        column: order
+        direction: asc
+    list: $/octobro/promo/models/rule/columns.yaml
+    form: $/octobro/promo/models/rule/fields.yaml
+    view:
+        toolbarButtons: create|delete
+
+coupons:
+    label: Coupon
+    showSearch: true
+    list: $/octobro/promo/models/coupon/columns.yaml
+    form: $/octobro/promo/models/coupon/fields.yaml
+    view:
+        toolbarButtons: create|delete

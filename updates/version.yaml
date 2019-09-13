@@ -1,0 +1,6 @@
+1.0.1:
+    - 'Initialize plugin.'
+    - create_octobro_promo_promos.php
+    - create_octobro_promo_coupons.php
+    - create_octobro_promo_rules.php
+    - create_octobro_promo_coupon_redemptions.php

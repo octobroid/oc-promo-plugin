@@ -1,0 +1,10 @@
+name: Promo
+form: $/octobro/promo/models/promo/fields.yaml
+modelClass: Octobro\Promo\Models\Promo
+defaultRedirect: octobro/promo/promos
+create:
+    redirect: 'octobro/promo/promos/update/:id'
+    redirectClose: octobro/promo/promos
+update:
+    redirect: octobro/promo/promos
+    redirectClose: octobro/promo/promos

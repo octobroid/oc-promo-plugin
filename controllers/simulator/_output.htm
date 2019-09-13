@@ -1,0 +1,6 @@
+<?php if($output): ?>
+<div id="data-json"></div>
+<script>
+$("#data-json").html(JSONTree.create(<?= json_encode($output) ?>));
+</script>
+<?php endif ?>

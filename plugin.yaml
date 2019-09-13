@@ -1,0 +1,31 @@
+plugin:
+    name: 'octobro.promo::lang.plugin.name'
+    description: 'octobro.promo::lang.plugin.description'
+    author: Octobro
+    icon: oc-icon-certificate
+    homepage: ''
+navigation:
+    promo:
+        label: Promo
+        url: octobro/promo/promos
+        permissions:
+            - octobro.promo.*
+        icon: icon-certificate
+        order: '400'
+        sideMenu:
+            promos:
+                label: Promotions
+                url: octobro/promo/promos
+                icon: icon-asterisk
+            coupons:
+                label: Coupons
+                url: octobro/promo/coupons
+                icon: icon-ticket
+            simulator:
+                label: Simulator
+                url: octobro/promo/simulator
+                icon: icon-toggle-right
+            couponredemptions:
+                label: Coupon Redemptions
+                url: octobro/promo/couponredemptions
+                icon: icon-ticket

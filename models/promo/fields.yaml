@@ -1,0 +1,134 @@
+fields:
+    name:
+        label: Name
+        oc.commentPosition: ''
+        span: auto
+        type: text
+    is_active:
+        label: 'Active'
+        span: right
+        default: 1
+        type: switch
+    is_published:
+        label: 'Published'
+        span: right
+        default: 1
+        type: switch
+tabs:
+    fields:
+        description:
+            label: Description
+            size: small
+            oc.commentPosition: ''
+            span: full
+            type: markdown
+            tab: General
+        start_at:
+            label: 'Start at'
+            oc.commentPosition: ''
+            mode: datetime
+            span: auto
+            type: datepicker
+            tab: General
+        end_at:
+            label: 'End at'
+            oc.commentPosition: ''
+            mode: datetime
+            span: auto
+            type: datepicker
+            tab: General
+        image:
+            label: Image
+            oc.commentPosition: ''
+            mode: image
+            useCaption: true
+            thumbOptions:
+                mode: crop
+                extension: auto
+            span: auto
+            type: fileupload
+            tab: General
+        promo_rules:
+            type: partial
+            path: $/octobro/promo/controllers/promos/_relation_rules.htm
+            tab: Rules
+        output:
+            label: Output
+            prompt: Add new target
+            type: repeater
+            tab: Output
+            form:
+                fields:
+                    type:
+                        label: Type
+                        span: auto
+                        commentAbove: Fill this if you want to specify the output type. Leave it blank if only one output type
+                    target:
+                        label: Target
+                        span: auto
+                        type: dropdown
+                        commentAbove: Select your discounted target for output
+                        options:
+                            '': '- Select Target -'
+                            subtotal: Subtotal
+                            tax: Tax
+                            shipping_fee: Shipping Fee
+                            misc_fee: Misc Fee
+                            total: Total
+                    output_amount:
+                        label: Amount
+                        oc.commentPosition: ''
+                        span: left
+                        type: number
+                    output_type:
+                        label: Type
+                        oc.commentPosition: ''
+                        options:
+                            fix: Fix
+                            percentage: Percentage
+                        span: auto
+                        type: dropdown
+                    output_min_amount:
+                        label: Minimum
+                        oc.commentPosition: ''
+                        span: auto
+                        type: number
+                    output_min_type:
+                        label: Type
+                        oc.commentPosition: ''
+                        options:
+                            fix: Fix
+                            percentage: Percentage
+                        span: auto
+                        type: dropdown
+                    output_max_amount:
+                        label: Maximum
+                        oc.commentPosition: ''
+                        span: auto
+                        type: number
+                    output_max_type:
+                        label: Type
+                        oc.commentPosition: ''
+                        options:
+                            fix: Fix
+                            percentage: Percentage
+                        span: auto
+                        type: dropdown
+        success_message:
+            label: 'Success Message'
+            size: small
+            oc.commentPosition: ''
+            span: full
+            type: textarea
+            tab: Output
+        terms_and_conditions:
+            label: 'Terms and Conditions'
+            span: full
+            size: huge
+            oc.commentPosition: ''
+            type: markdown
+            tab: 'Terms and Conditions'
+        coupons:
+            type: partial
+            path: $/octobro/promo/controllers/promos/_relation_coupons.htm
+            tab: Coupons

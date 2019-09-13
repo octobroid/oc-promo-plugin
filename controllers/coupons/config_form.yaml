@@ -1,0 +1,10 @@
+name: Coupons
+form: $/octobro/promo/models/coupon/fields.yaml
+modelClass: Octobro\Promo\Models\Coupon
+defaultRedirect: octobro/promo/coupons
+create:
+    redirect: 'octobro/promo/coupons/update/:id'
+    redirectClose: octobro/promo/coupons
+update:
+    redirect: octobro/promo/coupons
+    redirectClose: octobro/promo/coupons

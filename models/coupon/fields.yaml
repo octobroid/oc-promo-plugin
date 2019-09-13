@@ -1,0 +1,20 @@
+fields:
+    code:
+        label: Code
+        oc.commentPosition: ''
+        span: auto
+        type: text
+    stock:
+        label: Stock
+        oc.commentPosition: ''
+        span: auto
+        type: number
+    user:
+        label: User
+        oc.commentPosition: ''
+        nameFrom: name
+        descriptionFrom: email
+        span: auto
+        type: recordfinder
+        list: $/rainlab/user/models/user/columns.yaml
+        emptyOption: '-- None --'

@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Coupon Redemption
+
+# Model Form Field configuration
+form: $/octobro/promo/models/couponredemption/fields.yaml
+
+# Model Class name
+modelClass: Octobro\Promo\Models\CouponRedemption
+
+# Default redirect location
+defaultRedirect: octobro/promo/couponredemptions
+
+# Create page
+create:
+    title: Create Coupon Redemption
+    redirect: octobro/promo/couponredemptions/update/:id
+    redirectClose: octobro/promo/couponredemptions
+
+# Update page
+update:
+    title: Edit Coupon Redemption
+    redirect: octobro/promo/couponredemptions
+    redirectClose: octobro/promo/couponredemptions
+
+# Preview page
+preview:
+    title: Preview Coupon Redemption

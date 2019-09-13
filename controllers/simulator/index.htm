@@ -1,0 +1,57 @@
+
+<div class="callout fade in callout-info no-icon no-subheader">
+    <div class="header">
+        <h3>Simulator</h3>
+    </div>
+    <div class="content">
+        <p>This is a tool for simulating the coupon input based on rules that set before. It doesn't check the promo period, so assume the promo is live now.</p>
+    </div>
+</div>
+
+<div class="row">
+
+	<div class="col-md-6">
+		<form class="form-elements" role="form">
+			<div class="form-group section-field span-full">
+				<div class="field-section">
+	            	<h4>Input</h4>
+	            </div>
+	        </div>
+
+			<div class="form-group span-left is-required">
+				<label class="control-label">Code</label>
+				<input type="text" name="code" class="form-control" required>
+			</div>
+
+			<div class="form-group span-right is-required">
+				<label class="control-label">Count</label>
+				<input type="number" name="count" class="form-control" value="1" min="1" required>
+			</div>
+
+			<div class="form-group span-full">
+				<label class="control-label">Options</label>
+				<textarea name="options" class="form-control" placeholder="key=value"></textarea>
+			</div>
+
+			<div class="form-group span-full">
+				<label class="control-label">Target</label>
+				<textarea name="target" class="form-control" placeholder="subtotal=amount"></textarea>
+			</div>
+
+			<div class="form-group span-full">
+				<div class="loading-indicator-container">
+					<button type="submit" class="btn btn-primary oc-icon-check" data-request="onCheck" data-request-update="output: '#output'" data-load-indicator="Checking...">Check</button>
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group section-field span-full">
+			<div class="field-section">
+            	<h4>Output</h4>
+            </div>
+        </div>
+		<div id="output"></div>
+	</div>
+</div>

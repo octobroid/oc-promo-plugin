@@ -1,0 +1,21 @@
+columns:
+    id:
+        label: ID
+        type: number
+    name:
+        label: Name
+        type: text
+        searchable: true
+    is_active:
+        label: Active
+        type: switch
+    start_at:
+        label: Start
+        type: datetime
+    end_at:
+        label: End
+        type: datetime
+    coupons:
+        label: Coupons
+        relation: coupons
+        valueFrom: code

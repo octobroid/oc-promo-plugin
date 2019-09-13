@@ -1,0 +1,21 @@
+columns:
+    code:
+        label: Coupon
+        type: text
+        searchable: true
+        sortable: true
+    user:
+        label: User
+        type: text
+        searchable: true
+        sortable: true
+        select: name
+        relation: user
+    stock:
+        label: Stock
+        type: number
+        sortable: true
+    stock_used:
+        label: Stock Used
+        type: number
+        sortable: true
