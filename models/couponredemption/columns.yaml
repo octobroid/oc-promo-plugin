@@ -2,3 +2,20 @@ columns:
     id:
         label: ID
         type: number
+    user:
+        label: User
+        relation: user
+        valueFrom: name
+    promo_name:
+        label: Promo
+        relation: coupon
+        valueFrom: promo[name]
+    coupon_code:
+        label: Coupon Code
+    amount:
+        label: Amount
+    status:
+        label: Status
+    created_at:
+        label: Date
+        type: datetime

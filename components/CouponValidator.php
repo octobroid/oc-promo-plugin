@@ -36,6 +36,12 @@ class CouponValidator extends ComponentBase
                 'type' => 'switch',
                 'default' => true,
             ],
+            'refresh_on_success' => [
+                'title' => 'Refresh',
+                'description' => 'Refresh the page after success.',
+                'type' => 'switch',
+                'default' => true,
+            ],
         ];
     }
 
@@ -56,9 +62,13 @@ class CouponValidator extends ComponentBase
         }
 
         // Validate
-        if ($validator->validate($code, post('options'), post('target'))) {            
+        if ($validator->validate($code, post('options'))) {            
             // return success message
-            Flash::success($validator->output['message']);
+            Flash::success($validator->success_message);
+            
+            if ($this->property('refresh_on_success')) {
+                return redirect()->refresh();
+            }
         } else {
             // return error message
             Flash::error($validator->error_message);

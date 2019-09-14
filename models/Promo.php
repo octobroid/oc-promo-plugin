@@ -1,6 +1,7 @@
 <?php namespace Octobro\Promo\Models;
 
 use Model;
+use Promo as PromoManager;
 use Carbon\Carbon;
 
 /**
@@ -8,19 +9,11 @@ use Carbon\Carbon;
  */
 class Promo extends Model
 {
-    use \October\Rain\Database\Traits\Validation;
     use \October\Rain\Database\Traits\Sluggable;
-
-    /*
-     * Validation
-     */
-    public $rules = [
-        'name' => 'required',
-    ];
 
     public $dates = ['start_at', 'end_at'];
 
-    public $jsonable = ['output'];
+    public $jsonable = ['rules', 'outputs'];
 
     /**
      * @var array Generate slugs for these attributes.
@@ -35,10 +28,6 @@ class Promo extends Model
     public $hasMany = [
         'coupons' => [
             'Octobro\Promo\Models\Coupon',
-            'delete' => true,
-        ],
-        'promo_rules' => [
-            'Octobro\Promo\Models\Rule',
             'delete' => true,
         ],
     ];
@@ -58,5 +47,20 @@ class Promo extends Model
         } else {
             return 'ended';
         }
+    }
+
+    public function getRuleCodeOptions()
+    {
+        return array_merge(
+            collect(PromoManager::listRules())->lists('name', 'code'),
+            [
+                'group' => 'Rule Group',
+            ]
+        );
+    }
+
+    public function getOutputCodeOptions()
+    {
+        return collect(PromoManager::listOutputs())->lists('name', 'code');
     }
 }

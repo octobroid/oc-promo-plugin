@@ -1,0 +1,16 @@
+    operator:
+        label: Operator
+        span: auto
+        type: balloon-selector
+        default: and
+        options:
+            and: 'AND'
+            or: 'OR'
+            xor: 'XOR'
+    rule_code:
+        label: Type
+        span: auto
+        type: dropdown
+    rule_data_section:
+        label: ''
+        type: section

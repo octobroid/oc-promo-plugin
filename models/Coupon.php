@@ -3,6 +3,7 @@
 use Db;
 use Model;
 use Event;
+use Promo;
 use Carbon\Carbon;
 
 /**
@@ -42,25 +43,28 @@ class Coupon extends Model
      * @param  [type]  $data       [description]
      * @return [type]              [description]
      */
-    public function hold($user, $amount = 1, $data = null)
+    public function hold($user, $amount = 1, $options = null, $outputs = null)
     {
         try {
             Db::beginTransaction();
 
-            if ($this->stock >= 0 && $this->stock_used + $amount <= $this->stock) {
+            if (!is_null($this->stock) && $this->stock_used + $amount > $this->stock) {
                 return false;
             }
 
             $this->stock_used += $amount;
             $this->save();
 
-            $redemption         = new CouponRedemption;
-            $redemption->user   = $user;
-            $redemption->coupon = $this;
-            $redemption->amount = $amount;
-            $redemption->data   = $data;
+            $redemption          = new CouponRedemption;
+            $redemption->user    = $user;
+            $redemption->coupon  = $this;
+            $redemption->amount  = $amount;
+            $redemption->options = $options;
+            $redemption->outputs = $outputs;
             // $redemption->expired_at = Carbon::now()->addSeconds($time_limit);
             $redemption->save();
+
+            Promo::applyOutputs($redemption, 'hold');
 
             Event::fire('octobro.promo.afterCouponHeld', [$redemption]);
 

@@ -34,7 +34,6 @@ class Simulator extends Controller
 
 	    $iniParser = new Ini;
 	    $options = $iniParser->parse(Request::input('options'));
-        $target = $iniParser->parse(Request::input('target'));
         $count = Request::input('count');
 
 	    $validator = Validator::instance();
@@ -43,7 +42,7 @@ class Simulator extends Controller
         $validator->isSimulation = true;
 
 	    // Validate
-        if($validator->validate($code, $options, $target, $count)) {
+        if($validator->validate($code, $options, $count)) {
 
 		    $this->vars['output'] = [
                 'type' => $validator->outputType,

@@ -12,36 +12,39 @@ abstract class RuleBase
 
     public $options = [];
 
-    public $details = [];
-
 	public $error_message = 'Invalid coupon.';
 
-    public function __construct()
+    public function ruleDetails()
     {
-        $this->details = $this->ruleDetails();
+        return [
+            'code'        => '',
+            'name'        => 'Unknown',
+            'description' => 'Unknown rule.',
+        ];
     }
 
-    public function validate($options = [], $target = [])
+    public function validate($options = [])
     {
-        $options = is_array($options) ? $options : [];
-
         if (!$this->validateOptions($options)) {
             return false;
         }
 
-        return $this->onValidate($options, $target);
-    }
-
-    public function ruleDetails()
-    {
+        return $this->onValidate($options);
     }
 
     public function registerProperties()
     {
+        return [];
     }
 
-    public function onValidate($options, $target)
+    public function onValidate($options)
     {
+        return true;
+    }
+
+    public function property($key)
+    {
+        return array_get($this->props, $key);
     }
 
     public function validateOptions($options)

@@ -3,7 +3,7 @@
 use Schema;
 use October\Rain\Database\Updates\Migration;
 
-class BuilderTableCreateBigmangoPromoCouponRedemptions extends Migration
+class CreateCouponRedemptionsTable extends Migration
 {
     public function up()
     {
@@ -15,9 +15,13 @@ class BuilderTableCreateBigmangoPromoCouponRedemptions extends Migration
             $table->integer('coupon_id')->nullable()->unsigned()->index();
             $table->integer('user_id')->nullable()->unsigned()->index();
             $table->integer('amount')->default(1)->unsigned();
-            $table->text('data')->nullable();
+            $table->text('options')->nullable();
+            $table->text('outputs')->nullable();
             $table->string('status')->nullable();
+            $table->timestamp('redeemed_at')->nullable();
             $table->timestamp('expired_at')->nullable();
+            $table->string('related_id')->index()->nullable();
+            $table->string('related_type')->index()->nullable();
             $table->timestamps();
         });
     }

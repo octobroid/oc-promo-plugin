@@ -3,7 +3,7 @@
 use Schema;
 use October\Rain\Database\Updates\Migration;
 
-class BuilderTableCreateBigmangoPromoCoupons extends Migration
+class CreateCouponsTable extends Migration
 {
     public function up()
     {

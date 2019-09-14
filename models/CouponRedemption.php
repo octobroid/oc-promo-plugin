@@ -3,7 +3,9 @@
 use Db;
 use Model;
 use Event;
+use Promo;
 use Exception;
+use Carbon\Carbon;
 
 /**
  * Model
@@ -20,10 +22,12 @@ class CouponRedemption extends Model
      * Validation
      */
     public $rules = [
-        'coupon_code' => 'required',
+        // 'coupon_code' => 'required',
     ];
 
-    public $jsonable = ['data'];
+    public $jsonable = ['options', 'outputs'];
+
+    protected $dates = ['redeemed_at', 'expired_at'];
 
     /**
      * @var string The database table used by the model.
@@ -33,6 +37,10 @@ class CouponRedemption extends Model
     public $belongsTo = [
         'coupon' => 'Octobro\Promo\Models\Coupon',
         'user'   => 'RainLab\User\Models\User',
+    ];
+    
+    public $morphTo = [
+        'related' => [],
     ];
 
     public function beforeCreate()
@@ -51,8 +59,11 @@ class CouponRedemption extends Model
         try {
             Db::beginTransaction();
 
-            $this->status = self::STATUS_SUCCESS;
+            $this->status      = self::STATUS_SUCCESS;
+            $this->redeemed_at = Carbon::now();
             $this->save();
+
+            Promo::applyOutputs($this, 'redeem');
 
             Event::fire('octobro.promo.afterCouponRedeemed', [$this]);
 
@@ -74,11 +85,14 @@ class CouponRedemption extends Model
         try {
             Db::beginTransaction();
 
-            $this->status = self::STATUS_EXPIRED;
+            $this->status     = self::STATUS_EXPIRED;
+            $this->expired_at = Carbon::now();
             $this->save();
 
             $this->coupon->stock_used -= $this->amount;
             $this->coupon->save();
+
+            Promo::applyOutputs($this, 'release');
 
             Event::fire('octobro.promo.afterCouponReleased', [$this]);
 

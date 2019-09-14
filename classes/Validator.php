@@ -1,6 +1,8 @@
 <?php namespace Octobro\Promo\Classes;
 
 use Auth;
+use Event;
+use Promo;
 use Carbon\Carbon;
 use Octobro\Promo\Models\Coupon;
 use Octobro\Promo\Models\CouponRedemption;
@@ -9,41 +11,34 @@ class Validator
 {
     use \October\Rain\Support\Traits\Singleton;
 
-    public $promoManager;
     public $error_message;
     public $outputType;
     public $output;
 
     public $isSimulation = false;
 
-    public function __construct()
-    {
-        $this->promoManager = PromoManager::instance();
-    }
-
     /**
      * Validate coupon
      * @param  string $code    Coupon code input
      * @param  array  $options Options
-     * @param  array  $target Target
      * @param  integer  $count Count of couopn
      * @return [type]          [description]
      */
-    public function validate($code, $options = [], $target = [], $count = 1, $user = null)
+    public function validate($code, $options = [], $count = 1, $user = null)
     {
         $coupon = Coupon::whereCode($code)->first();
-
-        Event::fire('octobro.promo.beforeValidate', [&$code, &$options, &$target, &$count, &$user]);
 
         // If not found
         if (!$coupon) {
             $this->error_message = 'Coupon not found.';
             return false;
         }
+        
+        Event::fire('octobro.promo.beforeValidate', [&$coupon, &$options, &$count, &$user]);
 
         // If no stock anymore
-        if (!is_null($coupon->stock) && $coupon->stock < $count) {
-            $this->error_message = $coupon->stock > 0 ? sprintf('Only %s coupon(s) available.', $coupon->stock) : 'No more coupon.';
+        if (!is_null($coupon->stock) && $coupon->stock_used + $count > $coupon->stock) {
+            $this->error_message = $coupon->stock - $coupon->stock_used > 0 ? sprintf('Only %s coupon(s) available.', $coupon->stock - $coupon->stock_used) : 'No more coupon.';
             return false;
         }
 
@@ -65,70 +60,18 @@ class Validator
                 return false;
             }
         }
-
-        if (!$this->validateRule($coupon, $options, $target)) {
+        
+        if (!$this->validateRule($coupon, $options)) {
             return false;
         }
 
-        // If valid example
-        $output                 = [];
-        $output['promo']        = $coupon->promo->name;
-        $output['coupon_id']    = $coupon->id;
-        $output['coupon_code']  = $coupon->code;
-        $output['coupon_stock'] = $coupon->stock;
-        $output['message']      = $coupon->promo->success_message ?: 'Your coupon is valid!';
-        $output['target']       = [];
+        $this->success_message = $coupon->promo->success_message ?: 'Your coupon is valid!';
 
-        // If has output type, select only the selected type
-        if ($this->outputType) {
-            $promoOutputs = array_filter($coupon->promo->output, function($item) {
-                return $item['type'] == $this->outputType;
-            });
-        } else {
-            // If no, get the null type
-            $promoOutputs = array_filter($coupon->promo->output, function($item) {
-                return $item['type'] == null;
-            });
+        if (!$this->isSimulation) {
+            $coupon->hold($user ?: Auth::getUser(), $count, $options, $coupon->promo->outputs);
         }
-
-        if (!$promoOutputs) {
-            return false;
-        }
-
-        foreach ($promoOutputs as $promoOutput) {
-            $targetAmount = isset($target[$promoOutput['target']]) ? $target[$promoOutput['target']] : 0;
-            $amount       = 0;
-
-            // get the amount
-            $amount = $this->fixOrPercentage($promoOutput['output_amount'], $promoOutput['output_type'], $targetAmount);
-
-            // limit the max
-            if($promoOutput['output_max_amount']) {
-                $amount = min($amount, $this->fixOrPercentage($promoOutput['output_max_amount'], $promoOutput['output_max_type'], $targetAmount));
-            }
-
-            // limit the min
-            if($promoOutput['output_min_amount']) {
-                $amount = max($amount, $this->fixOrPercentage($promoOutput['output_min_amount'], $promoOutput['output_min_type'], $targetAmount));
-            }
-
-            $output['target'][$promoOutput['target']] = (int) min($amount, $targetAmount);
-        }
-
-        $this->output = $output;
-
-        $coupon->hold($user ?: Auth::getUser());
 
         return true;
-    }
-
-    protected function fixOrPercentage($amount, $type, $targetAmount)
-    {
-        if ($type == 'percentage') {
-            return (int) $amount / 100 * (int) $targetAmount;
-        }
-
-        return (int) $amount;
     }
 
     /**
@@ -137,27 +80,24 @@ class Validator
      * @param  [type] $options [description]
      * @return [type]          [description]
      */
-    public function validateRule($coupon, $options, $target)
+    public function validateRule($coupon, $options)
     {
-        $errorMessage = null;
-
-        $rules = $coupon->promo->promo_rules()->orderBy('sort_order', 'asc')->get();
-
         $result = true;
-        $outputType = null;
 
-        foreach ($rules as $rule) {
-            $ruleObject = $this->promoManager->findRuleByCode($rule->type);
+        foreach ($coupon->promo->rules as $rule) {
+            $code = array_get($rule, 'rule_code');
 
+            $ruleObject = Promo::findRuleByCode($code);
+            
             if (!$ruleObject) {
                 return false;
             }
 
-            $ruleObject->props = isset($rule->options[$rule->type]) ? $rule->options[$rule->type] : [];
+            $ruleObject->props = array_get($rule, $code, []);
 
-            $value = $ruleObject->validate($options, $target);
+            $value = $ruleObject->validate($options);
 
-            switch($rule->operator) {
+            switch (array_get($rule, 'operator', 'and')) {
             	case 'or':
             		$result = $result || $value;
             		break;
@@ -170,19 +110,8 @@ class Validator
             }
 
             if ($result === false) {
-                if(! $errorMessage) {
-
-                    $errorMessage = $rule->error_message ?: $ruleObject->error_message;
-                }
-            } elseif($value && $rule->output_type) {
-            	$outputType = $rule->output_type;
+                $this->error_message = $ruleObject->error_message;
             }
-        }
-
-        if ($result) {
-        	$this->outputType = $outputType;
-        } else {
-        	$this->error_message = $errorMessage;
         }
 
         return $result;
