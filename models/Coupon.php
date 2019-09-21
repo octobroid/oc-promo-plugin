@@ -26,6 +26,16 @@ class Coupon extends Model
      */
     public $table = 'octobro_promo_coupons';
 
+    /**
+     * @var array Guarded fields
+     */
+    protected $guarded = [];
+
+    /**
+     * @var array Fillable fields
+     */
+    protected $fillable = [];
+
     public $belongsTo = [
         'promo' => 'Octobro\Promo\Models\Promo',
         'user' => 'RainLab\User\Models\User',
@@ -78,8 +88,32 @@ class Coupon extends Model
         }
     }
 
-    static function generate($promo_id, $amount = 1, $user = null, $options = [])
+    static function generate($promo_id, $amount = 1, $length = 12, $stock = null, $user = null, $options = [])
     {
-        //
+        for ($i = 0; $i < $amount; $i++) {
+            self::create([
+                'promo_id' => $promo_id,
+                'code'     => self::generateCode(),
+                'stock'    => $stock,
+            ]);
+        }
+    }
+
+    static function generateCode($length = 12)
+    {
+        $characters = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        $charactersLength = strlen($characters);
+
+        $code = '';
+    
+        for ($i = 0; $i < $length; ++$i) {
+            $code .= $characters[rand(0, $charactersLength - 1)];
+        }
+
+        while (self::whereCode($code)->count()) {
+            $code = self::generateCode();
+        }
+
+        return $code;
     }
 }
