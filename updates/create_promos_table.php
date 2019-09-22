@@ -18,6 +18,7 @@ class CreatePromosTable extends Migration
             $table->timestamp('end_at')->nullable();
             $table->boolean('is_active')->default(1);
             $table->boolean('is_published')->default(1);
+            $table->text('rules')->nullable();
             $table->text('outputs')->nullable();
             $table->text('success_message')->nullable();
             $table->text('terms_and_conditions')->nullable();
