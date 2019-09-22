@@ -127,6 +127,11 @@ tabs:
             oc.commentPosition: ''
             type: markdown
             tab: 'Terms and Conditions'
+        
+        coupon_generator_button:
+            type: partial
+            path: $/octobro/promo/controllers/promos/_coupon_generator_button.htm
+            tab: Coupons
         coupons:
             type: partial
             path: $/octobro/promo/controllers/promos/_relation_coupons.htm

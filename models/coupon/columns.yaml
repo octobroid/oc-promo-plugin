@@ -4,13 +4,6 @@ columns:
         type: text
         searchable: true
         sortable: true
-    user:
-        label: User
-        type: text
-        searchable: true
-        sortable: true
-        select: name
-        relation: user
     stock:
         label: Stock
         type: number
@@ -19,3 +12,10 @@ columns:
         label: Stock Used
         type: number
         sortable: true
+    user:
+        label: User
+        type: text
+        searchable: true
+        sortable: true
+        select: name
+        relation: user

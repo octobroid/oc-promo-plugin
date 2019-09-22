@@ -1,0 +1,30 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    quantity:
+        label: Quantity
+        type: number
+        default: 1
+        span: auto
+        comment: Number of coupons that will be generated in bulk.
+
+    stock:
+        label: Stock
+        type: number
+        span: auto
+        comment: Number of stock for every coupon. Set null to unlimited stock.
+
+    length:
+        label: Length
+        type: number
+        default: 12
+        span: auto
+        comment: Length of coupon code (including the prefix).
+
+    prefix:
+        label: Prefix
+        type: text
+        span: auto
+        comment: Prefix of code

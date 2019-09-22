@@ -11,6 +11,7 @@ use Carbon\Carbon;
  */
 class Coupon extends Model
 {
+    use \October\Rain\Database\Traits\Nullable;
     use \October\Rain\Database\Traits\Validation;
 
     /*
@@ -35,6 +36,11 @@ class Coupon extends Model
      * @var array Fillable fields
      */
     protected $fillable = [];
+    
+    /**
+     * @var array Nullable attributes.
+     */
+    protected $nullable = ['stock'];
 
     public $belongsTo = [
         'promo' => 'Octobro\Promo\Models\Promo',
@@ -88,23 +94,23 @@ class Coupon extends Model
         }
     }
 
-    static function generate($promo_id, $amount = 1, $length = 12, $stock = null, $user = null, $options = [])
+    static function generate($promo_id, $amount = 1, $length = 12, $prefix = '', $stock = null, $user = null, $options = [])
     {
         for ($i = 0; $i < $amount; $i++) {
             self::create([
                 'promo_id' => $promo_id,
-                'code'     => self::generateCode(),
+                'code'     => self::generateCode($length, $prefix),
                 'stock'    => $stock,
             ]);
         }
     }
 
-    static function generateCode($length = 12)
+    static function generateCode($length = 12, $prefix = '')
     {
         $characters = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
         $charactersLength = strlen($characters);
 
-        $code = '';
+        $code = $prefix;
     
         for ($i = 0; $i < $length; ++$i) {
             $code .= $characters[rand(0, $charactersLength - 1)];
