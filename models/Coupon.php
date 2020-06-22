@@ -51,6 +51,11 @@ class Coupon extends Model
         'redemptions' => 'Octobro\Promo\Models\CouponRedemption',
     ];
 
+    public function setCodeAttribute($value)
+    {
+        $this->attributes['code'] = strtoupper($value);
+    }
+
     /**
      * [hold description]
      * @param  [type]  $user_id    [description]
