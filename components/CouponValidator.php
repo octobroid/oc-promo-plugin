@@ -3,6 +3,7 @@
 use Flash;
 use Cms\Classes\ComponentBase;
 use Octobro\Promo\Classes\Validator;
+use Octobro\Promo\Models\CouponRedemption;
 
 class CouponValidator extends ComponentBase
 {
@@ -74,5 +75,16 @@ class CouponValidator extends ComponentBase
             Flash::error($validator->error_message);
         }
     }
+
+    public function onRemove()
+    {
+        $redemption = CouponRedemption::find(post('redemption_id'));
+        $redemption->release();
+
+        if ($this->property('refresh_on_success')) {
+            return redirect()->refresh();
+        }
+    }
+
 
 }

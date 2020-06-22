@@ -1,12 +1,40 @@
+{% set redemption = __SELF__.property('redemption') %}
+{% if redemption and redemption.status != 'expired' %}
+<div class="form-group">
+    <div class="input-group">
+        <input type="text" name="{{ __SELF__.property('input_name') }}" placeholder="{{ __SELF__.property('input_code_placeholder') }}" class="form-control" value="{{ redemption.coupon_code }}" readonly>
+        <div class="input-group-append">
+            <button class="btn btn-outline-danger"
+                data-request-data="redemption_id: {{ redemption.id }}"
+                data-request="{{ __SELF__ ~ '::onRemove' }}"
+                data-attach-loading>Remove</button>
+        </div>
+    </div>
+    <small class="form-text text-success">
+        <strong>{{ redemption.coupon.promo.name }}</strong><br>
+        {{ redemption.coupon.promo.success_message }}
+    </small>
+</div>
+{% else %}
 <div class="form-group">
     {% if __SELF__.property('show_button') %}
     <div class="input-group">
         <input type="text" name="{{ __SELF__.property('input_name') }}" placeholder="{{ __SELF__.property('input_code_placeholder') }}" class="form-control">
         <div class="input-group-append">
-            <button class="btn btn-outline-primary" type="submit" data-request-form="input[name={{ __SELF__.property('input_name') }}]" data-request="{{ __SELF__ ~ '::onCheck' }}" data-attach-loading>Check</button>
+            <button class="btn btn-outline-primary"
+                type="submit"
+                data-request-form="input[name={{ __SELF__.property('input_name') }}]"
+                data-request="{{ __SELF__ ~ '::onCheck' }}"
+                data-request-data="options: {{ __SELF__.property('options')|json_encode }}"
+                data-attach-loading>Check</button>
         </div>
     </div>
     {% else %}
-    <input type="text" name="{{ __SELF__.property('input_name') }}" placeholder="{{ __SELF__.property('input_code_placeholder') }}" class="form-control" data-request="{{ __SELF__ ~ '::onCheck' }}" data-track-input data-request-flash>
+    <input type="text" name="{{ __SELF__.property('input_name') }}" placeholder="{{ __SELF__.property('input_code_placeholder') }}" class="form-control"
+        data-request="{{ __SELF__ ~ '::onCheck' }}"
+        data-request-data="options: {{ __SELF__.property('options')|json_encode }}"
+        data-track-input
+        data-request-flash>
     {% endif %}
 </div>
+{% endif %}
