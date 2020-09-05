@@ -1,9 +1,13 @@
 plugin:
-    name: 'octobro.promo::lang.plugin.name'
-    description: 'octobro.promo::lang.plugin.description'
+    name: "octobro.promo::lang.plugin.name"
+    description: "octobro.promo::lang.plugin.description"
     author: Octobro
     icon: oc-icon-certificate
-    homepage: ''
+    homepage: ""
+permissions:
+    octobro.promo.manage:
+        tab: Promo
+        label: Manage Promotions
 navigation:
     promo:
         label: Promo
@@ -11,7 +15,7 @@ navigation:
         permissions:
             - octobro.promo.*
         icon: icon-certificate
-        order: '400'
+        order: "400"
         sideMenu:
             promos:
                 label: Promotions
