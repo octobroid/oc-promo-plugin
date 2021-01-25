@@ -89,8 +89,10 @@ class CouponRedemption extends Model
             $this->expired_at = Carbon::now();
             $this->save();
 
-            $this->coupon->stock_used -= $this->amount;
-            $this->coupon->save();
+            $coupon = $this->coupon;
+
+            $coupon->stock_used -= $this->amount;
+            $coupon->save();
 
             Promo::applyOutputs($this, 'release');
 
