@@ -2,6 +2,7 @@ list: $/octobro/promo/models/promo/columns.yaml
 modelClass: Octobro\Promo\Models\Promo
 title: Promos
 noRecordsMessage: 'backend::lang.list.no_records'
+recordsPerPage: 20
 showSetup: true
 showCheckboxes: true
 toolbar:
