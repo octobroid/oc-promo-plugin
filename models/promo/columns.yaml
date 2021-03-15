@@ -19,3 +19,6 @@ columns:
         label: Coupons
         relation: coupons
         valueFrom: code
+    sort_order:
+        label: Sort Order
+        type: oc-sort-order

@@ -3,3 +3,6 @@
     - create_promos_table.php
     - create_coupons_table.php
     - create_coupon_redemptions_table.php
+1.0.2:
+    - Add Sort Order Column in Promos Table
+    - add_sort_order_promos_table.php

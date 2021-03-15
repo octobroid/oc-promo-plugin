@@ -10,8 +10,10 @@ use Carbon\Carbon;
 class Promo extends Model
 {
     use \October\Rain\Database\Traits\Sluggable;
+    use \October\Rain\Database\Traits\Sortable;
 
     public $dates = ['start_at', 'end_at'];
+
 
     public $jsonable = ['rules', 'outputs'];
 
