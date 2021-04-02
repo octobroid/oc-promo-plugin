@@ -9,7 +9,7 @@ class AddSortOrderPromosTable extends Migration
     {
         if (Schema::hasColumn('octobro_promo_promos', 'sort_order')) return;
         
-        Schema::create('octobro_promo_promos', function($table)
+        Schema::table('octobro_promo_promos', function($table)
         {
             $table->integer('sort_order')->nullable();
         });
