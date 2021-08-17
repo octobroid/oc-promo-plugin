@@ -18,10 +18,9 @@ tabs:
     fields:
         description:
             label: Description
-            size: small
             oc.commentPosition: ''
             span: full
-            type: markdown
+            type: richeditor
             tab: General
         start_at:
             label: 'Start at'
@@ -125,7 +124,7 @@ tabs:
             span: full
             size: huge
             oc.commentPosition: ''
-            type: markdown
+            type: richeditor
             tab: 'Terms and Conditions'
         
         coupon_generator_button:
