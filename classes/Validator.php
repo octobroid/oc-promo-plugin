@@ -3,6 +3,7 @@
 use Auth;
 use Event;
 use Promo;
+use ApplicationException;
 use Carbon\Carbon;
 use Octobro\Promo\Models\Coupon;
 use Octobro\Promo\Models\CouponRedemption;
@@ -26,7 +27,7 @@ class Validator
      */
     public function validate($code, $options = [], $count = 1, $user = null)
     {
-        $coupon = Coupon::whereCode($code)->first();
+        $coupon = Coupon::whereNotNull('promo_id')->whereCode($code)->first();
 
         // If not found
         if (!$coupon) {
@@ -84,7 +85,13 @@ class Validator
     {
         $result = true;
 
-        foreach ($coupon->promo->rules as $rule) {
+        $promo = $coupon->promo;
+
+        if (!$promo) {
+            throw new ApplicationException('Promo not found.');
+        }
+
+        foreach ($promo->rules as $rule) {
             $code = array_get($rule, 'rule_code');
 
             $ruleObject = Promo::findRuleByCode($code);
