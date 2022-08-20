@@ -11,8 +11,9 @@ promo_rules:
 
 coupons:
     label: Coupon
-    showSearch: true
     list: $/octobro/promo/models/coupon/columns.yaml
     form: $/octobro/promo/models/coupon/fields.yaml
     view:
         toolbarButtons: create|delete
+        showSearch: true
+        recordsPerPage: 20
