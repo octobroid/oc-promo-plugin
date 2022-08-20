@@ -11,7 +11,7 @@ class CreateCouponsTable extends Migration
         {
             $table->engine = 'InnoDB';
             $table->increments('id')->unsigned();
-            $table->string('code');
+            $table->string('code')->index();
             $table->integer('stock')->nullable()->unsigned();
             $table->integer('stock_used')->unsigned()->default(0);
             $table->timestamp('start_at')->nullable();

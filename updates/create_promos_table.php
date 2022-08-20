@@ -12,7 +12,7 @@ class CreatePromosTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id')->unsigned();
             $table->string('name');
-            $table->string('slug');
+            $table->string('slug')->index();
             $table->text('description')->nullable();
             $table->timestamp('start_at')->nullable();
             $table->timestamp('end_at')->nullable();
