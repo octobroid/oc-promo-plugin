@@ -91,33 +91,35 @@ class Validator
             throw new ApplicationException('Promo not found.');
         }
 
-        foreach ($promo->rules as $rule) {
-            $code = array_get($rule, 'rule_code');
-
-            $ruleObject = Promo::findRuleByCode($code);
-            
-            if (!$ruleObject) {
-                return false;
-            }
-
-            $ruleObject->props = array_get($rule, $code, []);
-
-            $value = $ruleObject->validate($options);
-
-            switch (array_get($rule, 'operator', 'and')) {
-            	case 'or':
-            		$result = $result || $value;
-            		break;
-            	case 'and':
-            		$result = $result && $value;
-            		break;
-            	case 'xor':
-            		$result = $result xor $value;
-            		break;
-            }
-
-            if ($result === false) {
-                $this->error_message = $ruleObject->error_message;
+        if (is_array($promo->rules)) {
+            foreach ($promo->rules as $rule) {
+                $code = array_get($rule, 'rule_code');
+    
+                $ruleObject = Promo::findRuleByCode($code);
+                
+                if (!$ruleObject) {
+                    return false;
+                }
+    
+                $ruleObject->props = array_get($rule, $code, []);
+    
+                $value = $ruleObject->validate($options);
+    
+                switch (array_get($rule, 'operator', 'and')) {
+                    case 'or':
+                        $result = $result || $value;
+                        break;
+                    case 'and':
+                        $result = $result && $value;
+                        break;
+                    case 'xor':
+                        $result = $result xor $value;
+                        break;
+                }
+    
+                if ($result === false) {
+                    $this->error_message = $ruleObject->error_message;
+                }
             }
         }
 
