@@ -19,3 +19,5 @@ columns:
         sortable: true
         select: name
         relation: user
+    created_at:
+       label: Created at

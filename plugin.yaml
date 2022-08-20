@@ -25,11 +25,11 @@ navigation:
                 label: Coupons
                 url: octobro/promo/coupons
                 icon: icon-ticket
-            simulator:
-                label: Simulator
-                url: octobro/promo/simulator
-                icon: icon-toggle-right
             couponredemptions:
                 label: Coupon Redemptions
                 url: octobro/promo/couponredemptions
                 icon: icon-ticket
+            simulator:
+                label: Simulator
+                url: octobro/promo/simulator
+                icon: icon-toggle-right
