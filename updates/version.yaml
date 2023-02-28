@@ -6,3 +6,6 @@
 1.0.2:
     - Add Sort Order Column in Promos Table
     - add_sort_order_promos_table.php
+1.0.3:
+    - change column type to long text
+    - coupon_redemptions_change_column_options.php
