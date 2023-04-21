@@ -4,6 +4,12 @@ columns:
         type: text
         searchable: true
         sortable: true
+    promo:
+        label: Promo
+        relation: promo
+        valueFrom: name
+        searchable: true
+        sortable: true
     stock:
         label: Stock
         type: number
